@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.deveo.android.LoginActivity$PlaceholderFragment">
+
+    <EditText
+        android:id="@+id/edit_text_company_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/company" />
+
+    <EditText
+        android:id="@+id/edit_text_login_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_text_company_main"
+        android:hint="@string/login" />
+
+    <EditText
+        android:id="@+id/edit_text_password_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_text_login_main"
+        android:password="true"
+        android:hint="@string/password" />
+
+    <Button
+        android:id="@+id/button_sign_in_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_text_password_main"
+        android:text="@string/sign_in"
+        android:onClick="loginClickHandler"/>
+
+</RelativeLayout>
