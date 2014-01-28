@@ -5,21 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.Map;
 
-public class User {
-
-    @SerializedName("api_status")
-    private int apiStatus;
-
-    @SerializedName("api_timestamp")
-    private String apiTimestamp;
+public class User extends Base {
 
     private String id;
-
-    @SerializedName("created_at")
-    private String createdAt;
-
-    @SerializedName("updated_at")
-    private String updatedAt;
 
     private String email;
 
@@ -53,44 +41,12 @@ public class User {
 
     private String source;
 
-    public int getApiStatus() {
-        return apiStatus;
-    }
-
-    public void setApiStatus(int apiStatus) {
-        this.apiStatus = apiStatus;
-    }
-
-    public String getApiTimestamp() {
-        return apiTimestamp;
-    }
-
-    public void setApiTimestamp(String apiTimestamp) {
-        this.apiTimestamp = apiTimestamp;
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public String getEmail() {
