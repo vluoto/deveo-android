@@ -110,4 +110,9 @@ public class Project {
         this.visibility = visibility;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }
