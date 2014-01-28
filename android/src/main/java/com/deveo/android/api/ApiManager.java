@@ -8,7 +8,7 @@ import retrofit.converter.GsonConverter;
 
 public class ApiManager {
 
-    private static final String API_URL = "https://deveo.com";
+    public static final String API_URL = "https://deveo.com";
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(MetadataResults.class, new MetadataResultsInstanceCreator())

@@ -4,13 +4,16 @@ import android.accounts.AccountManager;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deveo.android.accounts.AccountAuthenticator;
@@ -20,6 +23,15 @@ import com.deveo.android.api.MetadataResults;
 import com.deveo.android.core.Project;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.loader.Loader;
+import com.novoda.imageloader.core.model.ImageTag;
+import com.novoda.imageloader.core.model.ImageTagFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -33,16 +45,22 @@ public class DashboardActivity extends ListActivity {
 
     private DeveoService service;
 
+    private Loader imageLoader;
+
+    private ImageTagFactory imageTagFactory;
+
     private Context context;
 
-    private ArrayAdapter<Project> adapter;
+    private SimpleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        service = ApiManager.getService();
         context = this;
+        service = ApiManager.getService();
+        imageLoader = DeveoApplication.getImageManager().getLoader();
+        imageTagFactory = ImageTagFactory.newInstance(this, R.drawable.bg_img_loading);
 
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(LoginActivity.PARAM_AUTHTOKEN_TYPE, AccountAuthenticator.ACCOUNT_TYPE);
@@ -64,7 +82,19 @@ public class DashboardActivity extends ListActivity {
                     service.getUserProjects(authz, login, new Callback<MetadataResults<Project>>() {
                         @Override
                         public void success(MetadataResults<Project> metadataResults, Response response) {
-                            adapter = new ArrayAdapter<Project>(context, android.R.layout.simple_list_item_1, metadataResults.getResults());
+                            List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+
+                            for (Project project : metadataResults.getResults()) {
+                                Map<String, Object> projectEntry = new HashMap<String, Object>();
+                                projectEntry.put("image", project.getAvatar().get("medium"));
+                                projectEntry.put("project", project);
+                                data.add(projectEntry);
+                            }
+
+                            String[] from = new String[]{"image", "project"};
+                            int[] to = new int[]{R.id.image_list_item_avatar, R.id.image_list_item_label};
+                            adapter = new SimpleAdapter(context, data, R.layout.image_list_item, from, to);
+                            adapter.setViewBinder(getViewBinder());
                             getListView().setAdapter(adapter);
                         }
 
@@ -79,15 +109,51 @@ public class DashboardActivity extends ListActivity {
         }
     }
 
+    private SimpleAdapter.ViewBinder getViewBinder() {
+        return new SimpleAdapter.ViewBinder() {
+
+            @Override
+            public boolean setViewValue(View view, Object data, String textRepresentation) {
+                if (ImageView.class.isInstance(view)) {
+                    ImageTag tag = imageTagFactory.build(getAvatarUrl(data.toString()), context);
+                    ImageView imageView = (ImageView) view;
+                    imageView.setTag(tag);
+                    imageLoader.load(imageView);
+                }
+
+                if (TextView.class.isInstance(view)) {
+                    ((TextView) view).setText(((Project) data).getName());
+                }
+
+                return true;
+            }
+
+        };
+    }
+
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Project project = (Project) l.getAdapter().getItem(position);
+
+        // There's no way to check whether or not the Map should have generic parameters.
+        @SuppressWarnings("unchecked")
+        HashMap<String, Object> projectEntry = (HashMap<String, Object>) adapter.getItem(position);
+
+        Project project = (Project) projectEntry.get("project");
         String json = gson.toJson(project);
 
         Toast.makeText(context, json, Toast.LENGTH_LONG).show();
+    }
+
+    private String getAvatarUrl(String original) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("%s%s?");
+        builder.append(String.format("plugin_key=%s&", "f048f1f3a611631a228c7f7c57037744"));
+        builder.append(String.format("company_key=%s&", "e29b5239082e73223228b1cd7254e9b8"));
+        builder.append(String.format("account_key=%s", "05a261503c6afa4f257b032074737396"));
+        return String.format(builder.toString(), ApiManager.API_URL, original);
     }
 
     private String getAuthorizationHeader(Bundle bundle) {
