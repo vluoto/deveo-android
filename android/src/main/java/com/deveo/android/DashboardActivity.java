@@ -4,7 +4,6 @@ import android.accounts.AccountManager;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,9 +22,7 @@ import com.deveo.android.api.MetadataResults;
 import com.deveo.android.core.Project;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.loader.Loader;
-import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import java.util.ArrayList;
@@ -114,17 +111,16 @@ public class DashboardActivity extends ListActivity {
 
             @Override
             public boolean setViewValue(View view, Object data, String textRepresentation) {
-                if (ImageView.class.isInstance(view)) {
-                    ImageTag tag = imageTagFactory.build(getAvatarUrl(data.toString()), context);
-                    ImageView imageView = (ImageView) view;
-                    imageView.setTag(tag);
-                    imageLoader.load(imageView);
-                }
+                switch (view.getId()) {
+                    case R.id.image_list_item_avatar:
+                        view.setTag(imageTagFactory.build(getAvatarUrl(data.toString()), context));
+                        imageLoader.load((ImageView) view);
+                        break;
 
-                if (TextView.class.isInstance(view)) {
-                    ((TextView) view).setText(((Project) data).getName());
+                    case R.id.image_list_item_label:
+                        ((TextView) view).setText(((Project) data).getName());
+                        break;
                 }
-
                 return true;
             }
 
