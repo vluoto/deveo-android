@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deveo.android.accounts.AccountAuthenticator;
+import com.deveo.android.api.APIUtils;
 import com.deveo.android.api.DeveoAPIKeys;
 import com.deveo.android.api.DeveoClient;
 import com.deveo.android.api.MetadataResults;
@@ -115,7 +116,8 @@ public class DashboardActivity extends ListActivity {
             public boolean setViewValue(View view, Object data, String textRepresentation) {
                 switch (view.getId()) {
                     case R.id.image_list_item_avatar:
-                        view.setTag(imageTagFactory.build(getAvatarUrl(data.toString()), context));
+                        String avatarUrl = APIUtils.getAuthorizedUrl(client.getApiKeys(), data.toString());
+                        view.setTag(imageTagFactory.build(avatarUrl, context));
                         imageLoader.load((ImageView) view);
                         break;
 
@@ -174,15 +176,6 @@ public class DashboardActivity extends ListActivity {
         }
 
         return data;
-    }
-
-    private String getAvatarUrl(String original) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("%s%s?");
-        builder.append(String.format("plugin_key=%s&", "f048f1f3a611631a228c7f7c57037744"));
-        builder.append(String.format("company_key=%s&", "e29b5239082e73223228b1cd7254e9b8"));
-        builder.append(String.format("account_key=%s", "05a261503c6afa4f257b032074737396"));
-        return String.format(builder.toString(), DeveoClient.API_URL, original);
     }
 
     @Override

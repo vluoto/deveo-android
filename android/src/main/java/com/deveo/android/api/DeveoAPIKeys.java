@@ -57,4 +57,12 @@ public class DeveoAPIKeys {
         return builder.toString();
     }
 
+    public String toQueryParams() {
+        StringBuilder builder = new StringBuilder("?");
+        builder.append(String.format("plugin_key=%s&", PLUGIN_KEY));
+        builder.append(String.format("company_key=%s&", companyKey));
+        builder.append(String.format("account_key=%s", accountKey));
+        return builder.toString();
+    }
+
 }
