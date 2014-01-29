@@ -18,10 +18,13 @@ package com.deveo.android;
 
 import android.app.Application;
 
+import com.deveo.android.api.DeveoClient;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 
 public class DeveoApplication extends Application {
+
+    private static DeveoClient client;
 
     private static ImageManager imageManager;
 
@@ -29,10 +32,16 @@ public class DeveoApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        client = new DeveoClient();
+
         LoaderSettings settings = new LoaderSettings.SettingsBuilder()
                 .withDisconnectOnEveryCall(true).build(this);
 
         imageManager = new ImageManager(this, settings);
+    }
+
+    public static final DeveoClient getClient() {
+        return client;
     }
 
     public static final ImageManager getImageManager() {

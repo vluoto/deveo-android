@@ -28,8 +28,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.deveo.android.accounts.AccountAuthenticator;
-import com.deveo.android.api.ApiManager;
-import com.deveo.android.api.DeveoService;
+import com.deveo.android.api.DeveoClient;
 import com.deveo.android.core.Session;
 
 import retrofit.Callback;
@@ -48,7 +47,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
     public static final String PARAM_ACCOUNT_KEY = "accountKey";
 
-    private DeveoService service;
+    private DeveoClient client;
 
     private AccountManager accountManager;
 
@@ -58,7 +57,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
         setContentView(R.layout.activity_main);
 
-        service = ApiManager.getService();
+        client = DeveoApplication.getClient();
 
         accountManager = AccountManager.get(this);
         Account[] accounts = accountManager.getAccountsByType(AccountAuthenticator.ACCOUNT_TYPE);
@@ -85,7 +84,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     }
 
     protected void authenticate(final String company, final String login, final String password) {
-        service.authenticate(company, login, login, password, new Callback<Session>() {
+        client.authenticate(company, login, password, new Callback<Session>() {
             @Override
             public void success(Session session, Response response) {
                 Account account = new Account(login, AccountAuthenticator.ACCOUNT_TYPE);

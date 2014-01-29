@@ -32,8 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deveo.android.accounts.AccountAuthenticator;
-import com.deveo.android.api.ApiManager;
-import com.deveo.android.api.DeveoService;
+import com.deveo.android.api.DeveoAPIKeys;
+import com.deveo.android.api.DeveoClient;
 import com.deveo.android.api.MetadataResults;
 import com.deveo.android.core.Project;
 import com.google.gson.Gson;
@@ -64,7 +64,7 @@ public class DashboardActivity extends ListActivity {
 
     static final int REQUEST_AUTHENTICATE_ACCOUNT = 1337;
 
-    private DeveoService service;
+    private DeveoClient client;
 
     private Loader imageLoader;
 
@@ -79,7 +79,7 @@ public class DashboardActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 
         context = this;
-        service = ApiManager.getService();
+        client = DeveoApplication.getClient();
         imageLoader = DeveoApplication.getImageManager().getLoader();
         imageTagFactory = ImageTagFactory.newInstance(context, R.drawable.bg_img_loading);
 
@@ -95,7 +95,14 @@ public class DashboardActivity extends ListActivity {
         switch (requestCode) {
             case REQUEST_AUTHENTICATE_ACCOUNT:
                 if (data != null && data.getExtras() != null) {
-                    loadProjects(data.getExtras());
+                    Bundle extras = data.getExtras();
+
+                    DeveoAPIKeys apiKeys = new DeveoAPIKeys();
+                    apiKeys.setCompanyKey(extras.getString(LoginActivity.PARAM_COMPANY_KEY));
+                    apiKeys.setAccountKey(extras.getString(LoginActivity.PARAM_ACCOUNT_KEY));
+                    client.setApiKeys(apiKeys);
+
+                    loadProjects(extras.getString(AccountManager.KEY_ACCOUNT_NAME));
                 }
                 break;
         }
@@ -138,11 +145,8 @@ public class DashboardActivity extends ListActivity {
         Toast.makeText(context, json, Toast.LENGTH_LONG).show();
     }
 
-    protected void loadProjects(Bundle bundle) {
-        String login = bundle.getString(AccountManager.KEY_ACCOUNT_NAME);
-        String authz = getAuthorizationHeader(bundle);
-
-        service.getUserProjects(authz, login, new Callback<MetadataResults<Project>>() {
+    protected void loadProjects(String login) {
+        client.getUserProjects(login, new Callback<MetadataResults<Project>>() {
             @Override
             public void success(MetadataResults<Project> metadataResults, Response response) {
                 List<Map<String, Object>> data = getData(metadataResults.getResults());
@@ -178,16 +182,7 @@ public class DashboardActivity extends ListActivity {
         builder.append(String.format("plugin_key=%s&", "f048f1f3a611631a228c7f7c57037744"));
         builder.append(String.format("company_key=%s&", "e29b5239082e73223228b1cd7254e9b8"));
         builder.append(String.format("account_key=%s", "05a261503c6afa4f257b032074737396"));
-        return String.format(builder.toString(), ApiManager.API_URL, original);
-    }
-
-    private String getAuthorizationHeader(Bundle bundle) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("deveo ");
-        builder.append(String.format("plugin_key='%s'", "3c94d47d6257ca0d3bc54a9b6a91aa64"));
-        builder.append(String.format("company_key='%s'", bundle.getString(LoginActivity.PARAM_COMPANY_KEY)));
-        builder.append(String.format("account_key='%s'", bundle.getString(LoginActivity.PARAM_ACCOUNT_KEY)));
-        return builder.toString();
+        return String.format(builder.toString(), DeveoClient.API_URL, original);
     }
 
     @Override
