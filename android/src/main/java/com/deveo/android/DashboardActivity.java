@@ -38,6 +38,14 @@ public class DashboardActivity extends ListActivity {
 
     static final String TAG = DashboardActivity.class.getSimpleName();
 
+    static final String COLUMN_AVATAR = "avatar";
+
+    static final String COLUMN_PROJECT = "project";
+
+    static final String[] FROM = new String[]{COLUMN_AVATAR, COLUMN_PROJECT};
+
+    static final int[] TO = new int[]{R.id.image_list_item_avatar, R.id.image_list_item_label};
+
     static final int REQUEST_AUTHENTICATE_ACCOUNT = 1337;
 
     private DeveoService service;
@@ -57,9 +65,9 @@ public class DashboardActivity extends ListActivity {
         context = this;
         service = ApiManager.getService();
         imageLoader = DeveoApplication.getImageManager().getLoader();
-        imageTagFactory = ImageTagFactory.newInstance(this, R.drawable.bg_img_loading);
+        imageTagFactory = ImageTagFactory.newInstance(context, R.drawable.bg_img_loading);
 
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(LoginActivity.PARAM_AUTHTOKEN_TYPE, AccountAuthenticator.ACCOUNT_TYPE);
 
         startActivityForResult(intent, REQUEST_AUTHENTICATE_ACCOUNT);
@@ -71,36 +79,7 @@ public class DashboardActivity extends ListActivity {
         switch (requestCode) {
             case REQUEST_AUTHENTICATE_ACCOUNT:
                 if (data != null && data.getExtras() != null) {
-                    Bundle extras = data.getExtras();
-
-                    String login = extras.getString(AccountManager.KEY_ACCOUNT_NAME);
-                    String authz = getAuthorizationHeader(extras);
-
-                    service.getUserProjects(authz, login, new Callback<MetadataResults<Project>>() {
-                        @Override
-                        public void success(MetadataResults<Project> metadataResults, Response response) {
-                            List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-
-                            for (Project project : metadataResults.getResults()) {
-                                Map<String, Object> projectEntry = new HashMap<String, Object>();
-                                projectEntry.put("image", project.getAvatar().get("medium"));
-                                projectEntry.put("project", project);
-                                data.add(projectEntry);
-                            }
-
-                            String[] from = new String[]{"image", "project"};
-                            int[] to = new int[]{R.id.image_list_item_avatar, R.id.image_list_item_label};
-                            adapter = new SimpleAdapter(context, data, R.layout.image_list_item, from, to);
-                            adapter.setViewBinder(getViewBinder());
-                            getListView().setAdapter(adapter);
-                        }
-
-                        @Override
-                        public void failure(RetrofitError retrofitError) {
-                            Log.i(TAG, "FAILURE");
-                            Log.i(TAG, retrofitError.getMessage());
-                        }
-                    });
+                    loadProjects(data.getExtras());
                 }
                 break;
         }
@@ -137,10 +116,44 @@ public class DashboardActivity extends ListActivity {
         @SuppressWarnings("unchecked")
         HashMap<String, Object> projectEntry = (HashMap<String, Object>) adapter.getItem(position);
 
-        Project project = (Project) projectEntry.get("project");
+        Project project = (Project) projectEntry.get(COLUMN_PROJECT);
         String json = gson.toJson(project);
 
         Toast.makeText(context, json, Toast.LENGTH_LONG).show();
+    }
+
+    protected void loadProjects(Bundle bundle) {
+        String login = bundle.getString(AccountManager.KEY_ACCOUNT_NAME);
+        String authz = getAuthorizationHeader(bundle);
+
+        service.getUserProjects(authz, login, new Callback<MetadataResults<Project>>() {
+            @Override
+            public void success(MetadataResults<Project> metadataResults, Response response) {
+                List<Map<String, Object>> data = getData(metadataResults.getResults());
+                adapter = new SimpleAdapter(context, data, R.layout.image_list_item, FROM, TO);
+                adapter.setViewBinder(getViewBinder());
+                getListView().setAdapter(adapter);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Log.i(TAG, "FAILURE");
+                Log.i(TAG, retrofitError.getMessage());
+            }
+        });
+    }
+
+    private List<Map<String, Object>> getData(List<Project> projects) {
+        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+
+        for (Project project : projects) {
+            Map<String, Object> entry = new HashMap<String, Object>();
+            entry.put(COLUMN_AVATAR, project.getAvatar().get("medium"));
+            entry.put(COLUMN_PROJECT, project);
+            data.add(entry);
+        }
+
+        return data;
     }
 
     private String getAvatarUrl(String original) {
