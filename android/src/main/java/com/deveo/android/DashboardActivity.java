@@ -148,7 +148,7 @@ public class DashboardActivity extends ListActivity {
 
         for (Project project : projects) {
             Map<String, Object> entry = new HashMap<String, Object>();
-            entry.put(COLUMN_AVATAR, project.getAvatar().get("medium"));
+            entry.put(COLUMN_AVATAR, project.getMediumAvatarUrl());
             entry.put(COLUMN_PROJECT, project);
             data.add(entry);
         }
