@@ -135,16 +135,15 @@ public class DashboardActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        // There's no way to check whether or not the Map should have generic parameters.
+        // Trust me, I know what I'm doing.
         @SuppressWarnings("unchecked")
-        HashMap<String, Object> projectEntry = (HashMap<String, Object>) adapter.getItem(position);
+        Map<String, Object> entry = (HashMap<String, Object>) l.getItemAtPosition(position);
+        if (entry != null) {
+            Intent intent = new Intent(this, ProjectActivity.class);
+            intent.putExtra(ProjectActivity.PARAM_PROJECT_ID, ((Project) entry.get(COLUMN_PROJECT)).getId());
 
-        Project project = (Project) projectEntry.get(COLUMN_PROJECT);
-        String json = gson.toJson(project);
-
-        Toast.makeText(context, json, Toast.LENGTH_LONG).show();
+            startActivity(intent);
+        }
     }
 
     protected void loadProjects(String login) {
@@ -158,9 +157,9 @@ public class DashboardActivity extends ListActivity {
             }
 
             @Override
-            public void failure(RetrofitError retrofitError) {
+            public void failure(RetrofitError error) {
                 Log.i(TAG, "FAILURE");
-                Log.i(TAG, retrofitError.getMessage());
+                Log.i(TAG, error.getMessage() + "");
             }
         });
     }

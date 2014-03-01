@@ -16,11 +16,14 @@
 
 package com.deveo.android.api;
 
+import com.deveo.android.core.Event;
 import com.deveo.android.core.Project;
 import com.deveo.android.core.Session;
 import com.deveo.android.core.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -81,6 +84,16 @@ public class DeveoClient {
      */
     public void getUserProjects(String userId, Callback<MetadataResults<Project>> callback) {
         DEVEO_SERVICE.getUserProjects(apiKeys.toAuthorizationHeader(), userId, callback);
+    }
+
+    /**
+     * Gets events for the given query parameters.
+     *
+     * @param options  The Map of String pairs represented as query parameters.
+     * @param callback The Retrofit ResponseCallback.
+     */
+    public void getEvents(Map<String, String> options, Callback<MetadataResults<Event>> callback) {
+        DEVEO_SERVICE.getEvents(apiKeys.toAuthorizationHeader(), options, callback);
     }
 
 }

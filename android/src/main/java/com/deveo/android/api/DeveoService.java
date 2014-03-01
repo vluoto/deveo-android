@@ -16,9 +16,12 @@
 
 package com.deveo.android.api;
 
+import com.deveo.android.core.Event;
 import com.deveo.android.core.Project;
 import com.deveo.android.core.Session;
 import com.deveo.android.core.User;
+
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.http.Field;
@@ -27,6 +30,7 @@ import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.http.QueryMap;
 
 public interface DeveoService {
 
@@ -39,5 +43,8 @@ public interface DeveoService {
 
     @GET("/api/v0/users/{id}/projects")
     void getUserProjects(@Header("Authorization") String authorization, @Path("id") String id, Callback<MetadataResults<Project>> callback);
+
+    @GET("/api/v0/events")
+    void getEvents(@Header("Authorization") String autorization, @QueryMap Map<String, String> options, Callback<MetadataResults<Event>> callback);
 
 }
