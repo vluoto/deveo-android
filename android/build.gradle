@@ -34,4 +34,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.squareup.retrofit:retrofit:1.4.1'
     compile 'com.novoda.imageloader:imageloader-core:1.6.1'
+    compile 'org.apache.commons:commons-lang3:3.2.1'
 }
