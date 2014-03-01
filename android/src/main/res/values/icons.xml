@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2014 Deveo Ltd
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the “License”);
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an “AS IS” BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="icon_accept">&#xf021;</string>
+    <string name="icon_add">&#xf022;</string>
+    <string name="icon_app">&#xf023;</string>
+    <string name="icon_attention">&#xf024;</string>
+    <string name="icon_bot">&#xf025;</string>
+    <string name="icon_branch">&#xf026;</string>
+    <string name="icon_build_alt">&#xf027;</string>
+    <string name="icon_build_fail_alt">&#xf028;</string>
+    <string name="icon_build_fail">&#xf029;</string>
+    <string name="icon_build_success_alt">&#xf02a;</string>
+    <string name="icon_build_success">&#xf02b;</string>
+    <string name="icon_build">&#xf02c;</string>
+    <string name="icon_cancel">&#xf02d;</string>
+    <string name="icon_closed">&#xf02e;</string>
+    <string name="icon_comment">&#xf02f;</string>
+    <string name="icon_dashboard">&#xf030;</string>
+    <string name="icon_deveo">&#xf031;</string>
+    <string name="icon_directory">&#xf032;</string>
+    <string name="icon_edit">&#xf033;</string>
+    <string name="icon_eficode">&#xf034;</string>
+    <string name="icon_evt_add_app">&#xf035;</string>
+    <string name="icon_evt_add_bot">&#xf036;</string>
+    <string name="icon_evt_add_branch">&#xf037;</string>
+    <string name="icon_evt_add_group">&#xf038;</string>
+    <string name="icon_evt_add_page">&#xf039;</string>
+    <string name="icon_evt_add_project">&#xf03a;</string>
+    <string name="icon_evt_add_push">&#xf03b;</string>
+    <string name="icon_evt_add_repository">&#xf03c;</string>
+    <string name="icon_evt_add_tag_alt">&#xf03d;</string>
+    <string name="icon_evt_add_tag">&#xf03e;</string>
+    <string name="icon_evt_add_user">&#xf03f;</string>
+    <string name="icon_evt_remove_app">&#xf040;</string>
+    <string name="icon_evt_remove_bot">&#xf041;</string>
+    <string name="icon_evt_remove_branch">&#xf042;</string>
+    <string name="icon_evt_remove_group">&#xf043;</string>
+    <string name="icon_evt_remove_page">&#xf044;</string>
+    <string name="icon_evt_remove_project">&#xf045;</string>
+    <string name="icon_evt_remove_repository">&#xf046;</string>
+    <string name="icon_evt_remove_tag_alt">&#xf047;</string>
+    <string name="icon_evt_remove_tag">&#xf048;</string>
+    <string name="icon_evt_remove_user">&#xf049;</string>
+    <string name="icon_feed">&#xf04a;</string>
+    <string name="icon_fullscreen">&#xf04b;</string>
+    <string name="icon_git">&#xf04c;</string>
+    <string name="icon_group_alt">&#xf04d;</string>
+    <string name="icon_group">&#xf04e;</string>
+    <string name="icon_help">&#xf04f;</string>
+    <string name="icon_hook">&#xf050;</string>
+    <string name="icon_image">&#xf051;</string>
+    <string name="icon_info_alt">&#xf052;</string>
+    <string name="icon_info">&#xf053;</string>
+    <string name="icon_interaction_down">&#xf054;</string>
+    <string name="icon_interaction_left">&#xf055;</string>
+    <string name="icon_interaction_right">&#xf056;</string>
+    <string name="icon_interaction_up">&#xf057;</string>
+    <string name="icon_key">&#xf058;</string>
+    <string name="icon_mercurial">&#xf059;</string>
+    <string name="icon_message">&#xf05a;</string>
+    <string name="icon_notification">&#xf05b;</string>
+    <string name="icon_open">&#xf05c;</string>
+    <string name="icon_page">&#xf05d;</string>
+    <string name="icon_pirate">&#xf05e;</string>
+    <string name="icon_project">&#xf05f;</string>
+    <string name="icon_pull">&#xf060;</string>
+    <string name="icon_push">&#xf061;</string>
+    <string name="icon_quit">&#xf062;</string>
+    <string name="icon_refresh">&#xf063;</string>
+    <string name="icon_remove">&#xf064;</string>
+    <string name="icon_repository">&#xf065;</string>
+    <string name="icon_search">&#xf066;</string>
+    <string name="icon_settings_alt">&#xf067;</string>
+    <string name="icon_settings">&#xf068;</string>
+    <string name="icon_snapshot">&#xf069;</string>
+    <string name="icon_story">&#xf06a;</string>
+    <string name="icon_subtract">&#xf06b;</string>
+    <string name="icon_subversion">&#xf06c;</string>
+    <string name="icon_tag_alt">&#xf06d;</string>
+    <string name="icon_tag">&#xf06e;</string>
+    <string name="icon_task">&#xf06f;</string>
+    <string name="icon_text">&#xf070;</string>
+    <string name="icon_tip">&#xf071;</string>
+    <string name="icon_twitter">&#xf072;</string>
+    <string name="icon_user">&#xf073;</string>
+    <string name="icon_webdav">&#xf074;</string>
+    <string name="icon_wiki_alt_pen">&#xf075;</string>
+    <string name="icon_wiki_alt">&#xf076;</string>
+    <string name="icon_wiki_one">&#xf077;</string>
+    <string name="icon_wiki">&#xf078;</string>
+</resources>
