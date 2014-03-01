@@ -35,7 +35,7 @@ public class DeveoClient {
             .create();
 
     private static final RestAdapter REST_ADAPTER = new RestAdapter.Builder()
-            .setServer(API_URL)
+            .setEndpoint(API_URL)
             .setConverter(new GsonConverter(GSON))
             .build();
 
