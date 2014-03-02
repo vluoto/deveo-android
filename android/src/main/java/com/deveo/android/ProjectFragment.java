@@ -95,8 +95,8 @@ public class ProjectFragment extends Fragment {
             public void success(MetadataResults<Event> metadataResults, Response response) {
                 for (Event event : metadataResults.getResults()) {
                     Map<String, String> entry = new HashMap<>();
-                    entry.put(COLUMN_ICON, EventUtils.iconStringFor(event));
-                    entry.put(COLUMN_TEXT, EventUtils.toMessage(event));
+                    entry.put(COLUMN_ICON, EventUtils.getIcon(event));
+                    entry.put(COLUMN_TEXT, EventUtils.formatEvent(event));
                     events.add(entry);
                 }
                 adapter.notifyDataSetChanged();
