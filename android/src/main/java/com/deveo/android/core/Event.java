@@ -28,6 +28,8 @@ public class Event extends Base {
 
     public static final String ATTR_TARGET = "target";
 
+    public static final String ATTR_SUBJECT = "subject";
+
     public static final String TARGET_REPOSITORY = "repository";
 
     public static final String TARGET_PUSH = "push";
@@ -52,7 +54,7 @@ public class Event extends Base {
 
     private String id;
 
-    private String subject;
+    private User subject;
 
     private String operation;
 
@@ -70,11 +72,11 @@ public class Event extends Base {
         this.id = id;
     }
 
-    public String getSubject() {
+    public User getSubject() {
         return subject;
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(User subject) {
         this.subject = subject;
     }
 

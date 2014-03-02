@@ -54,7 +54,7 @@ public class EventUtils {
      * @return      The human-readable message.
      */
     public static String formatRepositoryEvent(Event event) {
-        return String.format("%s %s repository %s", event.getSubject(), event.getOperation(), event.getRepository());
+        return String.format("%s %s repository %s", event.getSubject().getDisplayName(), event.getOperation(), event.getRepository());
     }
 
     /**
@@ -64,7 +64,7 @@ public class EventUtils {
      * @return      The human-readable message.
      */
     public static String formatPushEvent(Event event) {
-        return String.format("%s %s a new push with %s commit(s) to %s", event.getSubject(), event.getOperation(), event.getCommitCount(), event.getRepository());
+        return String.format("%s %s a new push with %s commit(s) to %s", event.getSubject().getDisplayName(), event.getOperation(), event.getCommitCount(), event.getRepository());
     }
 
     /**
@@ -74,7 +74,7 @@ public class EventUtils {
      * @return      The human-readable message.
      */
     public static String formatBranchEvent(Event event) {
-        return String.format("%s %s branch %s at %s", event.getSubject(), event.getOperation(), event.getRef(), event.getRepository());
+        return String.format("%s %s branch %s at %s", event.getSubject().getDisplayName(), event.getOperation(), event.getRef(), event.getRepository());
     }
 
     /**
@@ -84,7 +84,7 @@ public class EventUtils {
      * @return      The human-readable message.
      */
     public static String formatTagEvent(Event event) {
-        return String.format("%s %s tag %s at %s", event.getSubject(), event.getOperation(), event.getRef(), event.getRepository());
+        return String.format("%s %s tag %s at %s", event.getSubject().getDisplayName(), event.getOperation(), event.getRef(), event.getRepository());
     }
 
     /**
@@ -96,9 +96,9 @@ public class EventUtils {
     public static String formatProjectUserEvent(Event event) {
         switch (event.getOperation()) {
             case OPERATION_CREATED:
-                return String.format("%s added %s as %s to the project", event.getSubject(), event.getUser(), event.getRole());
+                return String.format("%s added %s as %s to the project", event.getSubject().getDisplayName(), event.getUser(), event.getRole());
             case OPERATION_UPDATED:
-                return String.format("%s gave %s %s rights to the project", event.getSubject(), event.getUser(), event.getRole());
+                return String.format("%s gave %s %s rights to the project", event.getSubject().getDisplayName(), event.getUser(), event.getRole());
             default:
                 return "";
         }
@@ -111,7 +111,7 @@ public class EventUtils {
      * @return      The human-readable message.
      */
     public static String formatProjectBotEvent(Event event) {
-        return String.format("%s %s project bot %s", event.getSubject(), event.getOperation(), event.getBot());
+        return String.format("%s %s project bot %s", event.getSubject().getDisplayName(), event.getOperation(), event.getBot());
     }
 
     /**

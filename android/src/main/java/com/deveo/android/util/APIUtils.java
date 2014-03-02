@@ -21,6 +21,8 @@ import com.deveo.android.api.DeveoClient;
 
 public class APIUtils {
 
+    public static final String ATTR_EXPAND = "expand";
+
     public static String getAuthorizedUrl(DeveoAPIKeys apiKeys, String relativeUrl) {
         return String.format("%s%s%s", DeveoClient.API_URL, relativeUrl, apiKeys.toQueryParams());
     }

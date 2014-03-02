@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.deveo.android.core.Event;
+import com.deveo.android.util.APIUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -58,6 +59,7 @@ public class ProjectSCMFragment extends ProjectFragment {
         Map<String, String> options = new HashMap<String, String>();
         options.put(Event.ATTR_PROJECT, getActivity().getIntent().getStringExtra(ProjectActivity.PARAM_PROJECT_ID));
         options.put(Event.ATTR_TARGET, StringUtils.join(TARGETS, ","));
+        options.put(APIUtils.ATTR_EXPAND, Event.ATTR_SUBJECT);
 
         loadEvents(options);
     }
