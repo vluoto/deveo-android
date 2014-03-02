@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package com.deveo.android.api;
+package com.deveo.android.util;
+
+import com.deveo.android.api.DeveoAPIKeys;
+import com.deveo.android.api.DeveoClient;
 
 public class APIUtils {
 

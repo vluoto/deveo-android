@@ -29,16 +29,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.deveo.android.accounts.AccountAuthenticator;
-import com.deveo.android.api.APIUtils;
+import com.deveo.android.util.APIUtils;
 import com.deveo.android.api.DeveoAPIKeys;
 import com.deveo.android.api.DeveoClient;
 import com.deveo.android.api.MetadataResults;
 import com.deveo.android.core.Project;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.novoda.imageloader.core.loader.Loader;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
