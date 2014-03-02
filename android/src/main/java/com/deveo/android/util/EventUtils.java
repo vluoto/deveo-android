@@ -29,6 +29,9 @@ import static com.deveo.android.core.Event.TARGET_PROJECT_USER;
 import static com.deveo.android.core.Event.TARGET_PUSH;
 import static com.deveo.android.core.Event.TARGET_REPOSITORY;
 import static com.deveo.android.core.Event.TARGET_TAG;
+import static com.deveo.android.util.ColorUtils.COLOR_BLACK;
+import static com.deveo.android.util.ColorUtils.COLOR_GREEN;
+import static com.deveo.android.util.ColorUtils.COLOR_RED;
 import static com.deveo.android.util.TypefaceUtils.ICON_EVT_ADD_BOT;
 import static com.deveo.android.util.TypefaceUtils.ICON_EVT_ADD_BRANCH;
 import static com.deveo.android.util.TypefaceUtils.ICON_EVT_ADD_REPOSITORY;
@@ -272,17 +275,17 @@ public class EventUtils {
     public static int getIconColor(Event event) {
         switch (event.getOperation()) {
             case OPERATION_CREATED:
-                return ColorUtils.COLOR_GREEN;
+                return COLOR_GREEN;
             case OPERATION_COMPLETED:
-                return ColorUtils.COLOR_GREEN;
+                return COLOR_GREEN;
             case OPERATION_DELETED:
-                return ColorUtils.COLOR_RED;
+                return COLOR_RED;
             case OPERATION_FAILED:
-                return ColorUtils.COLOR_RED;
+                return COLOR_RED;
             case OPERATION_UPDATED:
-                return ColorUtils.COLOR_BLACK;
+                return COLOR_BLACK;
             default:
-                return ColorUtils.COLOR_BLACK;
+                return COLOR_BLACK;
         }
     }
 
