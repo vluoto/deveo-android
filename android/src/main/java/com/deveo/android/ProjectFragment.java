@@ -16,11 +16,14 @@
 
 package com.deveo.android;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.SimpleAdapter;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.deveo.android.api.DeveoClient;
@@ -30,7 +33,6 @@ import com.deveo.android.util.EventUtils;
 import com.deveo.android.util.TypefaceUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,51 +44,16 @@ public class ProjectFragment extends Fragment {
 
     private static final String TAG = ProjectSCMFragment.class.getSimpleName();
 
-    private static final String COLUMN_ICON = "icon";
-
-    private static final String COLUMN_TEXT = "text";
-
-    private static final String[] FROM = {COLUMN_ICON, COLUMN_TEXT};
-
-    private static final int[] TO = {R.id.event_list_item_icon, R.id.event_list_item_text};
-
     private DeveoClient client;
 
-    protected SimpleAdapter adapter;
-
-    private List<Map<String, String>> events;
+    protected ProjectEventAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         client = DeveoApplication.getClient();
-        events = new ArrayList<>();
-        adapter = new SimpleAdapter(getActivity(), events, R.layout.event_list_item, FROM, TO);
-        adapter.setViewBinder(getViewBinder());
-    }
-
-    private SimpleAdapter.ViewBinder getViewBinder() {
-        return new SimpleAdapter.ViewBinder() {
-
-            @Override
-            public boolean setViewValue(View view, Object data, String textRepresentation) {
-                switch (view.getId()) {
-                    case R.id.event_list_item_icon:
-                        TextView textView = (TextView) view;
-                        textView.setText(data.toString());
-                        TypefaceUtils.setIcons(textView);
-                        break;
-
-                    case R.id.event_list_item_text:
-                        ((TextView) view).setText(data.toString());
-                        break;
-                }
-
-                return true;
-            }
-
-        };
+        adapter = new ProjectEventAdapter(getActivity(), R.layout.event_list_item, new ArrayList<Event>());
     }
 
     protected void loadEvents(Map<String, String> options) {
@@ -94,10 +61,7 @@ public class ProjectFragment extends Fragment {
             @Override
             public void success(MetadataResults<Event> metadataResults, Response response) {
                 for (Event event : metadataResults.getResults()) {
-                    Map<String, String> entry = new HashMap<>();
-                    entry.put(COLUMN_ICON, EventUtils.getIcon(event));
-                    entry.put(COLUMN_TEXT, EventUtils.formatEvent(event));
-                    events.add(entry);
+                    adapter.add(event);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -108,6 +72,41 @@ public class ProjectFragment extends Fragment {
                 Log.i(TAG, error.getMessage() + "");
             }
         });
+    }
+
+    private class ProjectEventAdapter extends ArrayAdapter<Event> {
+
+        private int resource;
+
+        public ProjectEventAdapter(Context context, int resource, List<Event> events) {
+            super(context, resource, events);
+
+            this.resource = resource;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                LayoutInflater inflater = LayoutInflater.from(getActivity());
+                convertView = inflater.inflate(resource, parent, false);
+            }
+
+            if (convertView != null) {
+                Event event = getItem(position);
+
+                TextView tvIcon = (TextView) convertView.findViewById(R.id.event_list_item_icon);
+                tvIcon.setText(EventUtils.getIcon(event));
+                tvIcon.setTextColor(EventUtils.getIconColor(event));
+
+                TextView tvText = (TextView) convertView.findViewById(R.id.event_list_item_text);
+                tvText.setText(EventUtils.formatEvent(event));
+
+                TypefaceUtils.setIcons(tvIcon);
+            }
+
+            return convertView;
+        }
+
     }
 
 }

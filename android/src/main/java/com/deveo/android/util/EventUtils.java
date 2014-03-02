@@ -18,8 +18,10 @@ package com.deveo.android.util;
 
 import com.deveo.android.core.Event;
 
+import static com.deveo.android.core.Event.OPERATION_COMPLETED;
 import static com.deveo.android.core.Event.OPERATION_CREATED;
 import static com.deveo.android.core.Event.OPERATION_DELETED;
+import static com.deveo.android.core.Event.OPERATION_FAILED;
 import static com.deveo.android.core.Event.OPERATION_UPDATED;
 import static com.deveo.android.core.Event.TARGET_BRANCH;
 import static com.deveo.android.core.Event.TARGET_PROJECT_BOT;
@@ -258,6 +260,29 @@ public class EventUtils {
                 return getProjectBotIcon(event);
             default:
                 return "";
+        }
+    }
+
+    /**
+     * Gets the appropriate color for an Event icon based on Event's operation.
+     *
+     * @param event The Event.
+     * @return      The int color.
+     */
+    public static int getIconColor(Event event) {
+        switch (event.getOperation()) {
+            case OPERATION_CREATED:
+                return ColorUtils.COLOR_GREEN;
+            case OPERATION_COMPLETED:
+                return ColorUtils.COLOR_GREEN;
+            case OPERATION_DELETED:
+                return ColorUtils.COLOR_RED;
+            case OPERATION_FAILED:
+                return ColorUtils.COLOR_RED;
+            case OPERATION_UPDATED:
+                return ColorUtils.COLOR_BLACK;
+            default:
+                return ColorUtils.COLOR_BLACK;
         }
     }
 
