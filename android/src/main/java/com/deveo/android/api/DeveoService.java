@@ -45,6 +45,6 @@ public interface DeveoService {
     void getUserProjects(@Header("Authorization") String authorization, @Path("id") String id, Callback<MetadataResults<Project>> callback);
 
     @GET("/api/v0/events")
-    void getEvents(@Header("Authorization") String autorization, @QueryMap Map<String, String> options, Callback<MetadataResults<Event>> callback);
+    void getEvents(@Header("Authorization") String authorization, @QueryMap Map<String, String> options, Callback<MetadataResults<Event>> callback);
 
 }
