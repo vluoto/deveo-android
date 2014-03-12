@@ -18,7 +18,7 @@ package com.deveo.android.core;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Base {
+public abstract class Base {
 
     @SerializedName("api_status")
     private int apiStatus;

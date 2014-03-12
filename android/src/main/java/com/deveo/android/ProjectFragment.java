@@ -40,7 +40,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ProjectFragment extends Fragment {
+public abstract class ProjectFragment extends Fragment {
 
     private static final String TAG = ProjectSCMFragment.class.getSimpleName();
 
