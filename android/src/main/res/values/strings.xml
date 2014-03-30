@@ -25,5 +25,6 @@
     <string name="company">Company</string>
     <string name="sign_in">Sign in</string>
     <string name="title_activity_dashboard">My projects</string>
+    <string name="login_toast_invalid_credentials">Invalid credentials.</string>
 
 </resources>

@@ -19,13 +19,17 @@ package com.deveo.android;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
+import android.annotation.TargetApi;
+import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.deveo.android.accounts.AccountAuthenticator;
 import com.deveo.android.api.DeveoClient;
@@ -51,15 +55,20 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
     private AccountManager accountManager;
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
+
+        hideActionBar();
 
         client = DeveoApplication.getClient();
+        context = this;
 
-        accountManager = AccountManager.get(this);
+        accountManager = AccountManager.get(context);
         Account[] accounts = accountManager.getAccountsByType(AccountAuthenticator.ACCOUNT_TYPE);
         if (accounts.length > 0) {
             Account account = accounts[0];
@@ -68,13 +77,33 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             String password = accountManager.getPassword(account);
 
             authenticate(company, account.name, password);
+        } else {
+            hideLoader();
+        }
+    }
+
+    private void hideLoader() {
+        findViewById(R.id.loader_login).setVisibility(View.GONE);
+    }
+
+    private void showLoader() {
+        findViewById(R.id.loader_login).setVisibility(View.VISIBLE);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void hideActionBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            ActionBar actionBar = getActionBar();
+            if (actionBar != null) {
+                actionBar.hide();
+            }
         }
     }
 
     public void loginClickHandler(View view) {
-        EditText editTextCompany = (EditText) findViewById(R.id.edit_text_company_main);
-        EditText editTextLogin = (EditText) findViewById(R.id.edit_text_login_main);
-        EditText editTextPassword = (EditText) findViewById(R.id.edit_text_password_main);
+        EditText editTextCompany = (EditText) findViewById(R.id.edit_text_company_login);
+        EditText editTextLogin = (EditText) findViewById(R.id.edit_text_login_login);
+        EditText editTextPassword = (EditText) findViewById(R.id.edit_text_password_login);
 
         final String company = editTextCompany.getText().toString();
         final String login = editTextLogin.getText().toString();
@@ -84,6 +113,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     }
 
     protected void authenticate(final String company, final String login, final String password) {
+        showLoader();
+
         client.authenticate(company, login, password, new Callback<Session>() {
             @Override
             public void success(Session session, Response response) {
@@ -99,7 +130,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Log.e(TAG, retrofitError.getResponse().getReason());
+                hideLoader();
+                Toast.makeText(context, R.string.login_toast_invalid_credentials, Toast.LENGTH_LONG).show();
             }
         });
     }
